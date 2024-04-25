@@ -61,6 +61,7 @@ namespace MDE.CampusDetector.ViewModels
             set
             {
                 selectedCampus = value;
+                RaisePropertyChanged(nameof(SelectedCampus));
                 RaisePropertyChanged(nameof(IsCampusSelected));
 
 
@@ -94,8 +95,6 @@ namespace MDE.CampusDetector.ViewModels
         {
             if (selectedCampus != null && LastLocation != null)
             {
-                double lastDistance = SelectedCampusDistance;
-
                 SelectedCampusDistance = LastLocation.CalculateDistance(
                         selectedCampus.Latitude, selectedCampus.Longitude, DistanceUnits.Kilometers);
             }

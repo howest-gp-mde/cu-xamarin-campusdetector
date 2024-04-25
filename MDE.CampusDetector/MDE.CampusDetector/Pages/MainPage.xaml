@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MDE.CampusDetector.Pages.MainPage"
+             xmlns:converters="clr-namespace:MDE.CampusDetector.Converters"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:DistanceToStringConverter x:Key="distanceToStringConverter"/>
+            <converters:DistanceToUnitConverter x:Key="distanceToUnitConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <ActivityIndicator  IsRunning="{Binding IsLoading}" WidthRequest="100" />
+
+                <Grid Padding="20,5" IsVisible="{Binding IsLoading, Converter={xct:InvertedBoolConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Picker Grid.Row="0" 
+                    AutomationId="campusPicker"
+                    Title="Select a campus"
+                    ItemsSource="{Binding Campuses}"
+                    ItemDisplayBinding="{Binding Name }"
+                    SelectedItem="{Binding SelectedCampus}">
+                    </Picker>
+
+                    <Frame Grid.Row="1" IsVisible="{Binding IsCampusSelected}" Margin="0,50,0,0" Padding="20,20,20,50">
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding SelectedCampus.Name}"
+                                MaxLines="2"
+                                FontSize="28"
+                                HorizontalTextAlignment="Center" />
+                            <Frame HeightRequest="250" WidthRequest="250">
+                                <Grid>
+                                    <Image Aspect="AspectFill" Source="{Binding SelectedCampus.PhotoUrl}" />
+                                </Grid>
+                            </Frame>
+                            <Label HorizontalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span FontSize="60" Text="{Binding SelectedCampusDistance, Converter={converters:DistanceToStringConverter}}" />
+                                        <Span FontSize="30" Text=" " />
+                                        <Span FontSize="30" Text="{Binding SelectedCampusDistance, Converter={converters:DistanceToUnitConverter}}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                 
+                </Grid>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
